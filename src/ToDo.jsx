@@ -117,18 +117,24 @@ const ToDo = () => {
         onChange={(e) => setTask(e.target.value)}
         placeholder="Enter a task..."
       />
-      <input className='mobile-phone'
+  <input
+    class="mobile-phone"
+    type="text"
+    value={dateTime}
+    onFocus={(e) => (e.target.type = 'datetime-local')}
+    onBlur={(e) => (e.target.type = 'text')}
+    onChange={(e) => setDateTime(e.target.value)}
+    placeholder="Select date and time..."
+  />
+
+<input className='desktop'
         type="datetime-local"
-        placeholder="Select date and time..."
         value={dateTime}
         onChange={(e) => setDateTime(e.target.value)}
       />
+
        <button className='add-button' onClick={addTask} title='Click me to add task'>{isEditing ? 'Update Task' : 'Add Task'}</button>
-      <input className='desktop'
-        type="datetime-local"
-        value={dateTime}
-        onChange={(e) => setDateTime(e.target.value)}
-      />
+     
      
      <button
         onClick={requestNotificationPermission}

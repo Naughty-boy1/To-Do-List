@@ -1,16 +1,4 @@
 import React, { useState, useEffect } from 'react';
-navigator.serviceWorker.ready.then(function(registration) {
-  registration.pushManager.subscribe({
-    userVisibleOnly: true,
-    applicationServerKey: '<Your Public VAPID Key>'
-  }).then(function(subscription) {
-    console.log('User is subscribed:', subscription);
-    // Send subscription to your server
-  }).catch(function(error) {
-    console.log('Failed to subscribe the user:', error);
-  });
-});
-
 
 const ToDo = () => {
   const [tasks, setTasks] = useState([]);
@@ -25,13 +13,35 @@ const ToDo = () => {
     console.log('Loaded tasks from localStorage:', savedTasks);
     setTasks(savedTasks);
   }, []);
-
+  
   useEffect(() => {
     console.log('Saving tasks to localStorage:', tasks);
     if (tasks.length > 0) {
       localStorage.setItem('tasks', JSON.stringify(tasks));
     }
   }, [tasks]);
+
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.ready.then(function(registration) {
+        registration.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: 'BGCPPq6d0kzufTZlPwsWyTR_7Mv5uCe5lPQOAAyO6t7H5_PqbyvGCUb2br-GpbtUmlYTClJnCuLwg7LK5sc2e10'
+        }).then(function(subscription) {
+          fetch('http://localhost:3001/subscribe', {
+            method: 'POST',
+            body: JSON.stringify(subscription),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+        }).catch(function(error) {
+          console.log('Failed to subscribe the user:', error);
+        });
+      });
+    }
+  }, []);
+  
 
   const addTask = () => {
     const now = new Date();
@@ -130,7 +140,7 @@ const ToDo = () => {
         placeholder="Enter a task..."
       />
   <input
-    class="mobile-phone"
+    className="mobile-phone"
     type="text"
     value={dateTime}
     onFocus={(e) => (e.target.type = 'datetime-local')}

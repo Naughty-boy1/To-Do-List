@@ -102,6 +102,7 @@ const ToDo = () => {
 
   useEffect(() => {
     scheduleNotifications();
+  
   }, [tasks]);
 
   return (
@@ -118,6 +119,7 @@ const ToDo = () => {
       />
       <input className='mobile-phone'
         type="datetime-local"
+        placeholder="Select date and time..."
         value={dateTime}
         onChange={(e) => setDateTime(e.target.value)}
       />

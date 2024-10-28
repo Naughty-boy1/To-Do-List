@@ -1,4 +1,16 @@
 import React, { useState, useEffect } from 'react';
+navigator.serviceWorker.ready.then(function(registration) {
+  registration.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey: '<Your Public VAPID Key>'
+  }).then(function(subscription) {
+    console.log('User is subscribed:', subscription);
+    // Send subscription to your server
+  }).catch(function(error) {
+    console.log('Failed to subscribe the user:', error);
+  });
+});
+
 
 const ToDo = () => {
   const [tasks, setTasks] = useState([]);
